@@ -7,7 +7,7 @@ import Signin from "./Signin";
 import {baseURL} from '../screens/components/adressIP'
 
 
-function Profil({ navigation, token }) {
+function Profil({ navigation, token, addToken}) {
 
 
   const [visible, setVisible] = useState(false);
@@ -54,6 +54,7 @@ function Profil({ navigation, token }) {
     })
   };
 
+  /* Overlay si non connecté */
   var handleSubmitSignin = async () => {
  
     const data = await fetch(`${baseURL}/sign-in`, {
@@ -66,7 +67,7 @@ function Profil({ navigation, token }) {
 
     if(body.result == true){
       
-      console.log(body.token);
+      console.log("azer",body.token);
       props.addToken(body.token);
 
       const rawReponse = await fetch(`${baseURL}/getGroups`, {
@@ -75,12 +76,18 @@ function Profil({ navigation, token }) {
       body: `token=${body.token}`
     })
 
-      const response = await rawReponse.json()
+    const response = await rawReponse.json()
       setGroupList(response);
       AsyncStorage.setItem("user token", body.token);
       toggleSignin();
       // setUserExists(true)
       
+    await fetch(`${baseURL}/userProfil`,{
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `token=${body.token}`
+    })
+
     }  else {
       setErrorsSignin(body.error)
     }
@@ -91,7 +98,7 @@ function Profil({ navigation, token }) {
       AsyncStorage.getItem("user token", 
               async function(error, data){
                 if(data){
-                props.addToken(data);
+                addToken(data);
                 const rawReponse = await fetch(`${baseURL}/getGroups`, {
                   method: 'POST',
                   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -99,13 +106,19 @@ function Profil({ navigation, token }) {
                 })
 
                const response = await rawReponse.json()
-              setGroupList(response);
+                  setGroupList(response);
                 }else{
                   setVisibleSignin(true);
                 }
               })
+         
+              
     })();
-  }, []);
+     
+            }, []);
+
+  
+  
 
   /* Update user */
   var updateUser = async () => {
@@ -312,3 +325,16 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Profil);
+
+
+     // const responseUser = await fetch(`${baseURL}/userProfil`,{
+              //   method: 'POST',
+              //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+              //   body: `token=${token}`
+              // })
+              
+              // const responseJson = responseUser.json()
+              // console.log("test",responseJson);
+              // setEmail(responseJson.email)
+              // setPassword(responseJson.password)
+              // setUserName(responseJson.username)

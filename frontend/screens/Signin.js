@@ -34,7 +34,7 @@ function Signin(props) {
 
     if(body.result == true){
       console.log(body.token);
-      props.addToken(body.token)
+      // props.addToken(body.token)
       setUserExists(true)
       
     }  else {

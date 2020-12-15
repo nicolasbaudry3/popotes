@@ -366,7 +366,13 @@ router.get('/randomCourrousel', async function(req, res, next) {
   res.json(randomRecipe);
 });
 
+/* Profil User */
+router.get('/userProfil', async function(req,res,next){
+  var rawResponse = await userModel.find();
+  console.log("hello",rawResponse);
 
+  res.json(rawResponse);
+})
 module.exports = router;
 
 

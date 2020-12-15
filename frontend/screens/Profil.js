@@ -5,6 +5,7 @@ import { AntDesign, Fontisto, Entypo } from "@expo/vector-icons";
 import { connect } from 'react-redux';
 import Signin from "./Signin";
 
+
 function Profil({ navigation, token }) {
 
 
@@ -52,10 +53,25 @@ function Profil({ navigation, token }) {
     })
   };
 
+  /* Profil */
+  useEffect (() => {
+    var userProfil = async () => {
+      var profil = await fetch("http://172.17.1.53:3000/userProfil", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `token=${token}&usernameFromFront=${userName}&emailFromFront=${email}&passwordFromFront=${password}`
+      })
+      var response = await profil.json();
+      console.log(response);
+    
+    }
+  })
+
+
   /* Update user */
   var updateUser = async () => {
 
-    var userRegisters = await fetch("http://192.168.1.87:3000/userUpdate", {
+    var userRegisters = await fetch("http://172.17.1.53:3000/userUpdate", {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `token=${token}&usernameFromFront=${userName}&emailFromFront=${email}&passwordFromFront=${password}`

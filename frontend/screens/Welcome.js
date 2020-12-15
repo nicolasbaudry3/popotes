@@ -13,6 +13,8 @@ export default function welcome({ navigation }) {
     const [ifTrue, setIfTrue] = useState(false);
 
     useEffect(()=>{
+        /* test clear nico */
+        // AsyncStorage.clear();
         const goToHome = async()=>{
         var preferences = ['gluten free','vegetarian','lactose free','vegan'];
         for (let i = 0; i<preferences.length; i++){
